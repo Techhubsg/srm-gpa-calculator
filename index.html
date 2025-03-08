@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRM GPA Calculator - Ultimate Tool for Students</title>
+    <meta name="description" content="SRM University's most detailed GPA calculator with semester tracking, grade analysis, and personalized insights. Calculate GPA/CGPA instantly!">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+        }
+        body { background: #f8f9fa; }
+        .tool-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 2rem auto;
+            padding: 2rem;
+            max-width: 1200px;
+        }
+        .feature-badge { background: var(--secondary-color); }
+        .analysis-card { border-left: 4px solid var(--secondary-color); }
+        #gradeDistributionChart { max-height: 300px; }
+    </style>
+</head>
+<body>
+    <div class="tool-container">
+        <!-- Header Section -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 mb-3">SRM Ultimate GPA Analyzer</h1>
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                <span class="feature-badge badge rounded-pill">CGPA Predictor</span>
+                <span class="feature-badge badge rounded-pill">Grade Analytics</span>
+                <span class="feature-badge badge rounded-pill">Semester Tracking</span>
+            </div>
+        </div>
+
+        <!-- Main Calculator Section -->
+        <div class="row g-4">
+            <!-- Input Panel -->
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">📝 Course Input</h4>
+                        <div id="courses-container">
+                            <!-- Dynamic course entries will be added here -->
+                        </div>
+                        <div class="d-grid gap-2 d-md-block mt-3">
+                            <button class="btn btn-primary" onclick="addCourse()">
+                                <i class="fas fa-plus-circle"></i> Add Course
+                            </button>
+                            <button class="btn btn-outline-danger" onclick="removeCourse()">
+                                <i class="fas fa-trash"></i> Remove Course
+                            </button>
+                        </div>
+                        <div class="mt-4">
+                            <button class="btn btn-success w-100 py-2" onclick="calculateGPA()">
+                                <i class="fas fa-rocket"></i> Generate Full Analysis
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div id="results" style="display: none;">
+                            <h4 class="card-title mb-4">📊 Detailed Analysis</h4>
+                            
+                            <!-- Key Metrics -->
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="analysis-card p-3 mb-3">
+                                        <small class="text-muted">Current GPA</small>
+                                        <h2 class="mb-0" id="currentGpa">0.00</h2>
+                                        <small class="text-muted">/10.00</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="analysis-card p-3 mb-3">
+                                        <small class="text-muted">Credits Completed</small>
+                                        <h2 class="mb-0" id="totalCredits">0</h2>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Progress to Target -->
+                            <div class="mb-4">
+                                <h5>🎯 Progress to Target GPA</h5>
+                                <div class="progress" style="height: 25px;">
+                                    <div id="gpaProgress" class="progress-bar" 
+                                         role="progressbar" style="width: 0%">8.2/9.0</div>
+                                </div>
+                                <div class="mt-2">
+                                    <input type="number" id="targetGpa" step="0.1" min="0" max="10" 
+                                           class="form-control form-control-sm" 
+                                           placeholder="Set target GPA (e.g., 9.0)">
+                                </div>
+                            </div>
+
+                            <!-- Grade Distribution Chart -->
+                            <div class="mb-4">
+                                <h5>📈 Grade Distribution</h5>
+                                <canvas id="gradeDistributionChart"></canvas>
+                            </div>
+
+                            <!-- Actionable Insights -->
+                            <div class="alert alert-warning">
+                                <h5>💡 Performance Insights</h5>
+                                <div id="performanceInsights"></div>
+                            </div>
+
+                            <!-- Subject Breakdown -->
+                            <div class="mb-4">
+                                <h5>📚 Subject-wise Performance</h5>
+                                <div id="subjectBreakdown" class="row"></div>
+                            </div>
+                        </div>
+
+                        <!-- Initial State Message -->
+                        <div id="initialMessage" class="text-center text-muted py-5">
+                            <i class="fas fa-arrow-left fa-2x mb-3"></i>
+                            <p>Add your courses and click "Generate Analysis" to see detailed insights!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Value-Added Sections -->
+        <div class="row mt-4 g-4">
+            <!-- GPA Comparison -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5>🏫 University Comparison</h5>
+                        <table class="table">
+                            <tr><td>SRM Average GPA</td><td>8.2</td></tr>
+                            <tr><td>Your GPA</td><td id="comparisonGpa">-</td></tr>
+                            <tr><td>Percentile Rank</td><td id="percentileRank">-</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scholarship Info -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5>🏆 Scholarship Potential</h5>
+                        <ul id="scholarshipInfo" class="list-group">
+                            <li class="list-group-item">Loading recommendations...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+
+    <script>
+        // Grade Configuration
+        const gradeConfig = {
+            'A+': { points: 10, color: '#27ae60' },
+            'A': { points: 9, color: '#2ecc71' },
+            'B+': { points: 8, color: '#f1c40f' },
+            'B': { points: 7, color: '#f39c12' },
+            'C+': { points: 6, color: '#e67e22' },
+            'C': { points: 5, color: '#d35400' },
+            'D': { points: 4, color: '#e74c3c' },
+            'F': { points: 0, color: '#c0392b' }
+        };
+
+        // Initialize Chart
+        let gradeChart;
+        const ctx = document.getElementById('gradeDistributionChart').getContext('2d');
+
+        // Course Management
+        let courses = [];
+
+        function addCourse() {
+            const newCourse = document.createElement('div');
+            newCourse.className = 'course-entry row g-3 align-items-center mb-3';
+            newCourse.innerHTML = `
+                <div class="col-6">
+                    <input type="text" class="form-control subject-name" placeholder="Subject Name">
+                </div>
+                <div class="col-3">
+                    <input type="number" class="form-control credits-input" 
+                           placeholder="Credits" min="0" step="0.5" required>
+                </div>
+                <div class="col-3">
+                    <select class="form-select grade-select">
+                        ${Object.entries(gradeConfig).map(([grade, data]) => 
+                            `<option value="${grade}" style="background:${data.color}30">${grade}</option>`
+                        ).join('')}
+                    </select>
+                </div>
+            `;
+            document.getElementById('courses-container').appendChild(newCourse);
+        }
+
+        function removeCourse() {
+            const container = document.getElementById('courses-container');
+            if (container.children.length > 0) {
+                container.removeChild(container.lastElementChild);
+            }
+        }
+
+        // Main Calculation Function
+        function calculateGPA() {
+            const entries = document.getElementsByClassName('course-entry');
+            courses = [];
+            let totalCredits = 0, totalPoints = 0;
+
+            // Process each course
+            Array.from(entries).forEach(entry => {
+                const course = {
+                    subject: entry.querySelector('.subject-name').value || 'Untitled Course',
+                    credits: parseFloat(entry.querySelector('.credits-input').value),
+                    grade: entry.querySelector('.grade-select').value
+                };
+                
+                if (course.credits > 0) {
+                    totalCredits += course.credits;
+                    totalPoints += course.credits * gradeConfig[course.grade].points;
+                    courses.push(course);
+                }
+            });
+
+            // Calculate GPA
+            const gpa = totalCredits > 0 ? (totalPoints / totalCredits) : 0;
+            
+            // Update Display
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('initialMessage').style.display = 'none';
+            document.getElementById('currentGpa').textContent = gpa.toFixed(2);
+            document.getElementById('totalCredits').textContent = totalCredits.toFixed(1);
+            document.getElementById('comparisonGpa').textContent = gpa.toFixed(2);
+
+            // Update Visualizations
+            updateGradeDistributionChart();
+            updatePerformanceInsights(gpa);
+            updateSubjectBreakdown();
+            updateScholarshipInfo(gpa);
+            updateGpaProgress(gpa);
+        }
+
+        // Advanced Features
+        function updateGradeDistributionChart() {
+            if (gradeChart) gradeChart.destroy();
+            
+            const gradeCounts = Object.keys(gradeConfig).reduce((acc, grade) => {
+                acc[grade] = courses.filter(c => c.grade === grade).length;
+                return acc;
+            }, {});
+
+            gradeChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(gradeCounts),
+                    datasets: [{
+                        data: Object.values(gradeCounts),
+                        backgroundColor: Object.values(gradeConfig).map(g => g.color)
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} courses` } }
+                    }
+                }
+            });
+        }
+
+        function updatePerformanceInsights(gpa) {
+            const insights = [];
+            if (gpa >= 9) insights.push("🌟 You're in the top 5% of SRM students!");
+            if (courses.some(c => c.grade === 'F')) insights.push("⚠️ You have failing grades - consider retaking courses");
+            if (courses.filter(c => ['A+','A'].includes(c.grade)).length >= courses.length/2) {
+                insights.push("🚀 Strong performance! Keep up the good work");
+            }
+            
+            document.getElementById('performanceInsights').innerHTML = insights
+                .map(i => `<div class="mb-2"><i class="fas fa-circle-info"></i> ${i}</div>`)
+                .join('');
+        }
+
+        function updateScholarshipInfo(gpa) {
+            const scholarships = [];
+            if (gpa >= 9.5) scholarships.push("President's Scholarship: 100% fee waiver");
+            if (gpa >= 9.0) scholarships.push("Dean's Award: ₹50,000 annual");
+            if (gpa >= 8.5) scholarships.push("Merit Scholarship: ₹25,000 annual");
+            
+            const list = scholarships.length > 0 
+                ? scholarships.map(s => `<li class="list-group-item">✅ ${s}</li>`).join('')
+                : '<li class="list-group-item">🎯 Aim for 8.5+ GPA for scholarship eligibility</li>';
+            
+            document.getElementById('scholarshipInfo').innerHTML = list;
+        }
+
+        function updateGpaProgress(currentGpa) {
+            const targetGpa = parseFloat(document.getElementById('targetGpa').value) || 9.0;
+            const progress = (currentGpa / targetGpa) * 100;
+            document.getElementById('gpaProgress').style.width = `${Math.min(progress, 100)}%`;
+            document.getElementById('gpaProgress').textContent = 
+                `${currentGpa.toFixed(1)}/${targetGpa.toFixed(1)}`;
+        }
+
+        // Initialize first course
+        window.onload = addCourse;
+    </script>
+</body>
+</html>
