@@ -3,25 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Calculate your SRM GPA easily with our free SRM GPA Calculator. Accurate, fast, and user-friendly. Perfect for SRM University students!">
-  <meta name="keywords" content="srm gpa calculator,srm gpa calculator,srm gpa calculator,srm gpa calculator,srm gpa calculator,srm gpa calculator,srm gpa calculator,srm gpa calculator,srm gpa calculator,srmgpacalculator,srmgpacalculator,srmgpacalculator,srmgpacalculator,srmgpacalculator,srmgpacalculator,srmgpacalculator,srmgpacalculator,srmgpacalculator srm university gpa calculator, srm gpa calculation, srm grade calculator, srm cgpa calculator">
-  <meta name="author" content="srm gpa calculator">
-  <meta name="title" content="SRM GPA Calculator - Calculate Your GPA Online for SRM University">
-  <title>SRM GPA Calculator - Calculate Your GPA Easily</title>
-  <!-- favicon -->
-   <link rel="shortcut icon" href="/logo.png" type="image/x-icon">
+  
+  <!-- SEO Meta Tags -->
+  <meta name="title" content="SRM GPA Calculator | Free & Accurate Online SRM University GPA Calculator">
+  <meta name="description" content="Easily calculate your SRM University GPA with our free online SRM GPA Calculator. 100% accurate, fast, and user-friendly. Start calculating now!">
+  <meta name="keywords" content="SRM GPA calculator, SRM University GPA, calculate SRM GPA, SRM grade calculator, SRM CGPA calculator, SRM GPA formula">
+  <meta name="author" content="SRM GPA Calculator">
+  
+  <!-- Open Graph Meta Tags (For Facebook, LinkedIn, etc.) -->
+  <meta property="og:title" content="SRM GPA Calculator | Calculate Your GPA Online">
+  <meta property="og:description" content="Calculate your SRM University GPA easily and accurately with our free SRM GPA Calculator. No registration required!">
+  <meta property="og:image" content="https://srm-gpa-calculator-one.vercel.app/logo.png">
+  <meta property="og:url" content="https://srm-gpa-calculator-one.vercel.app">
+  <meta property="og:type" content="website">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SRM GPA Calculator | Free & Accurate">
+  <meta name="twitter:description" content="Fast and accurate SRM University GPA calculator. Free and easy to use for students!">
+  <meta name="twitter:image" content="https://srm-gpa-calculator-one.vercel.app/logo.png">
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="/logo.png" type="image/x-icon">
+
+  <!-- Preconnect for Performance -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Schema Markup -->
+
+  <!-- Schema Markup for SEO -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@type": "WebApplication",
     "name": "SRM GPA Calculator",
-    "description": "Calculate your SRM University GPA easily with our free SRM GPA Calculator. Accurate, fast, and user-friendly. Perfect for SRM students!",
+    "description": "Easily calculate your SRM University GPA with our free online SRM GPA Calculator. 100% accurate, fast, and user-friendly.",
     "applicationCategory": "Educational",
     "operatingSystem": "Web",
     "url": "https://srm-gpa-calculator-one.vercel.app",
+    "image": "https://srm-gpa-calculator-one.vercel.app/logo.png",
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "5",
@@ -29,6 +51,8 @@
     }
   }
   </script>
+
+  <!-- FAQ Schema for Rich Results -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -61,6 +85,8 @@
     ]
   }
   </script>
+
+  <!-- Breadcrumb Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -81,6 +107,8 @@
     ]
   }
   </script>
+
+  <!-- Custom Styles -->
   <style>
     body {
       background-color: #f8f9fa;
@@ -93,38 +121,30 @@
       font-weight: bold;
     }
     .calculator-container {
+      max-width: 800px;
+      margin: 30px auto;
       background-color: #fff;
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      margin-top: 30px;
+    }
+    .form-label {
+      font-weight: 500;
+      color: #333;
     }
     .result {
       font-size: 24px;
       font-weight: bold;
       color: #0c3868;
       margin-top: 20px;
-      background: #0c386859;
+      background: rgba(12, 56, 104, 0.35);
     }
     .footer {
       background-color: #0c3868;
       color: #fff;
       padding: 10px 0;
-      
+      text-align: center;
     }
-    .calculator-container {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  .form-label {
-    font-weight: 500;
-    color: #333;
-  }
-
   </style>
 </head>
 <body>
